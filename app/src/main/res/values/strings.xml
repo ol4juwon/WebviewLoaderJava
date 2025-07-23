@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">SimpleWebViewApp</string>
+    <string name="enter_payment_link">Enter Payment link</string>
+    <string name="pay_now">Pay now</string>
+</resources>
