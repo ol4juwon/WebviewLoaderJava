@@ -8,6 +8,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 public class MainActivity extends AppCompatActivity {
     EditText linkInput;
     Button submitBtn;
@@ -23,14 +26,26 @@ public class MainActivity extends AppCompatActivity {
 
             submitBtn.setOnClickListener(view -> {;
                 String link = linkInput.getText().toString().trim();
-                if(TextUtils.isEmpty(link)){
-                    Toast.makeText(MainActivity.this, "Please enter a valid link: "+link, Toast.LENGTH_SHORT).show();
-                }else {
-                    Toast.makeText(MainActivity.this, "link "+link, Toast.LENGTH_SHORT).show();
 
+                if (TextUtils.isEmpty(link)) {
+                    Toast.makeText(MainActivity.this, "Please enter a valid link: "+link, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                try {
+                    URL url = new URL(link);
+
+                    if (!link.startsWith("https://")) {
+                        throw new MalformedURLException("Not an HTTPS URL");
+                    }
+
+                    // Link is valid
+                    Toast.makeText(MainActivity.this, "Opening: " + link, Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(MainActivity.this, WebViewActivity.class);
                     intent.putExtra("link", link);
                     startActivity(intent);
+
+                } catch (MalformedURLException e) {
+                    Toast.makeText(MainActivity.this, "Invalid HTTPS link", Toast.LENGTH_SHORT).show();
                 }
             });
 
